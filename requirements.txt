@@ -1,0 +1,6 @@
+snakebite
+hdfs
+celery
+redis
+flower
+pandas

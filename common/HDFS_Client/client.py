@@ -1,6 +1,7 @@
 from snakebite.client import Client
 from hdfs import InsecureClient
 
+
 class Client:
     def __init__(self, host='localhost', port=9000, user):
         self.client = Client(host, port, version)
@@ -35,4 +36,3 @@ class Client:
     # with client.write('model.json', encoding='utf-8') as writer:
     # from json import dump
     # dump(model, writer)
-

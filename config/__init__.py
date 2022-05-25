@@ -12,13 +12,13 @@ class Config:
     MASTER_PASSWORD = ''
     WORKER_NUMS = 1
     MASTER_POWEROFF = False
-
     CONFIG_FOLDER = 'logs'
+    HDFS_HOST = "127.0.0.1"
+    HDFS_PORT = "50070"
 
     def __init__(self):
         # Set all values to config
         for k in os.environ:
-            # print(f'{k}={os.environ[k]}')
             value = None
             try:
                 value = getattr(self, k)
