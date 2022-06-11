@@ -3,18 +3,20 @@ import os
 
 class Config:
     CELERY_APP = 'common.celery.app'
-    # CELERY_TASKS = 'worker.sample.hello'
+    CELERY_TASKS = 'worker.sample.hello'
     LOGGING_LEVEL = 'INFO'
     LOGGING_FILE = 'crawler.log'
     LOG_FORMAT = '%(asctime)s -- %(levelname)s -- %(filename)s -- %(message)s'
-    # MASTER_RUNNERS = 'master/sample/hello.py'
+    MASTER_RUNNERS = 'master/sample/hello.py'
     MASTER_HOST = 'localhost'
-    MASTER_PASSWORD = ''
-    WORKER_NUMS = 1
-    MASTER_POWEROFF = False
+
     CONFIG_FOLDER = 'logs'
-    HDFS_HOST = "127.0.0.1"
-    HDFS_PORT = "50070"
+
+    DB_HOST = "localhost"
+    DB_PORT = "5432"
+    DB_USERNAME = "dev"
+    DB_PASSWORD = "2205"
+    DB_NAME = "thdl"
 
     def __init__(self):
         # Set all values to config
