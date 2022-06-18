@@ -1,4 +1,5 @@
 from common import monitor_helper
+from common.logging import logger
 from config import config
 
 

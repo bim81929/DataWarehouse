@@ -3,6 +3,7 @@ import logging
 from config import config
 
 LOG_FORMAT = '%(asctime)s -- %(levelname)s -- %(filename)s -- %(message)s'
+# LOG_FORMAT = '%(asctime)s - (%(name)s)[%(levelname)s][%(host)s]: %(request)s %(message)s %(status)d %(byte)d'
 
 
 class Logging:

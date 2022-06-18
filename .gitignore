@@ -7,3 +7,4 @@ common/sql/__pycache__/*
 config/__pycache__/*
 worker/vietnamnet/__pycache__/*
 master/__pycache__/*
+test.py

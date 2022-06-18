@@ -1,6 +1,3 @@
-import sys
-from contextlib import contextmanager
-
 import psycopg2
 
 from config import config
@@ -53,7 +50,7 @@ def sql_insert(connect, table, df):
         print("ERROR CONNECT")
 
 
-def sql_read_table(connect, table, l_columns):
+def sql_read_table(connect, table, l_columns, condition=None):
     data = None
     if connect is not None:
         cursor = connect.cursor()
@@ -61,7 +58,10 @@ def sql_read_table(connect, table, l_columns):
             columns = "*"
         else:
             columns = ",".join(l_columns)
-        query = f"SELECT {columns} from {table}"
+        if condition is None:
+            query = f"SELECT {columns} from {table}"
+        else:
+            query = f"SELECT {columns} from {table} where {condition}"
         cursor.execute(query)
 
         data = cursor.fetchall()
