@@ -19,13 +19,15 @@ DOMAIN = "vietnamnet.vn"
           retry_kwargs={'max_retries': 3},
           retry_backoff=True,
           retry_jitter=250)
-def crawl(category):
-    for page in range(0, LIMIT_CRAWL):
-        url = f"https://vietnamnet.vn/{category}-page{page}"
-        response = requests_lib.get_text(url)
-        _date = datetime.now().strftime(config.DATE_TIME_FORMAT)
-        parse(response, _date)
-    return len(id)
+def crawl(category, page, offset):
+    if page == 100:
+        return None
+    url = f"https://vietnamnet.vn/{category}-page{page}"
+    response = requests_lib.get_text(url)
+    _date = datetime.now().strftime(config.DATE_TIME_FORMAT)
+    parse(response, _date)
+    crawl.delay(category, page + offset, offset)
+    return url
 
 
 @app.task(autoretry_for=(Exception,),
@@ -40,7 +42,8 @@ def parse(raw_data, date):
         _summary = data.find("div", {"class": "feature-box__content--desc"}).getText().strip()
 
         df = pd.DataFrame(
-            {"id": [str(uuid.uuid4())], "domain": DOMAIN, "url": [_url_title.get("href")], "category": [str(_category)],
+            {"id": [str(uuid.uuid4())], "domain": DOMAIN, "url": [f"https://{DOMAIN}{_url_title.get('href')}"],
+             "category": [str(_category)],
              "title": [_url_title.getText().strip().replace("'", '"')],
              "summary": [str(_summary).replace("'", '"')], "created_date": date})
         connect = sql.get_connect()

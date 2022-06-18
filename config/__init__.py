@@ -9,7 +9,8 @@ class Config:
     LOG_FORMAT = '%(asctime)s -- %(levelname)s -- %(filename)s -- %(message)s'
     MASTER_RUNNERS = 'master/main.py'
     MASTER_HOST = 'localhost'
-
+    MASTER_PASSWORD = ""
+    WORKER_NUMS = 1
     CONFIG_FOLDER = 'logs'
 
     DB_HOST = "localhost"
