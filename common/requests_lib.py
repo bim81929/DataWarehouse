@@ -2,6 +2,8 @@ import os
 import threading
 import time
 import requests
+from bs4 import BeautifulSoup
+
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:73.0) Gecko/20100101 Firefox/73.0',
     'X-Requested-With': 'XMLHttpRequest'
@@ -45,3 +47,6 @@ def post(url, data=None, json=None, headers=None):
     if response.status_code != 200:
         return {'status_code': response.status_code, 'text': response.text}
     return response.json()
+
+def beatiful_soup(html):
+    return BeautifulSoup(html, 'html.parser')

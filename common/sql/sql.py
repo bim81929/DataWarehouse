@@ -1,3 +1,4 @@
+import sys
 from contextlib import contextmanager
 
 import psycopg2
@@ -19,7 +20,7 @@ def get_connect():
     host, port, username, password, database = get_config()
     try:
         connect = psycopg2.connect(host=host, port=port, database=database,
-                                   username=username, password=password)
+                                   user=username, password=password)
     except Exception as e:
         print(e)
         connect = None
@@ -38,11 +39,15 @@ def sql_insert(connect, table, df):
     if connect is not None:
         cursor = connect.cursor()
         if len(df) > 0:
-            df_columns = list(df)
-            columns = ",".join(df_columns)
-            values = "VALUES({})".format(",".join(["%s" for _ in df_columns]))
-            query = f"INSERT INTO {table} ({columns}) {values}"
-            cursor.execute(query)
+            try:
+                df_columns = list(df)
+                columns = ",".join(df_columns)
+                list_values = [str(x) for x in list(set([tuple(x) for x in df.to_numpy()]))]
+                values = "VALUES{}".format(",".join(list_values))
+                query = f"INSERT INTO {table} ({columns}) {values}"
+                cursor.execute(query)
+            except:
+                pass
         sql_close(connect)
     else:
         print("ERROR CONNECT")
@@ -52,7 +57,10 @@ def sql_read_table(connect, table, l_columns):
     data = None
     if connect is not None:
         cursor = connect.cursor()
-        columns = ",".join(l_columns)
+        if l_columns[0] == "*":
+            columns = "*"
+        else:
+            columns = ",".join(l_columns)
         query = f"SELECT {columns} from {table}"
         cursor.execute(query)
 

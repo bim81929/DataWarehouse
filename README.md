@@ -12,6 +12,6 @@
 ### Cài thư viện
 - pip install -r requirements.txt
 ### Master
-- ``celery --app=common.celery.app --broker=redis://<master_ip>:6379/0 --result-backend=redis://<master_ip>:6379/1 flower --port=5555 --address=0.0.0.0 --loglevel=WARNING``
+- ``celery --app=common.celery.app --broker=redis://localhost:6379/0 --result-backend=redis://localhost:6379/1 flower --port=5555 --address=0.0.0.0 --loglevel=WARNING``
 ### Worker
-- ``celery --app=common.celery.app --broker=redis://<master_ip>:6379/0 --result-backend=redis://<master_ip>:6379/1 worker --prefetch-multiplier=1 --concurrency=1 --pool=solo -Ofair``
+- ``celery --app=common.celery.app --broker=redis://localhost:6379/0 --result-backend=redis://localhost:6379/1 worker --prefetch-multiplier=1 --concurrency=1 --pool=solo -Ofair``

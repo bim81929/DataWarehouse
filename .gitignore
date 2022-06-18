@@ -1,2 +1,4 @@
 venv
 .idea/*
+crawler.log
+dump.rdb
