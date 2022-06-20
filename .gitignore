@@ -3,8 +3,8 @@ venv
 crawler.log
 dump.rdb
 master/vietnamnet/crawler.log
-common/sql/__pycache__/*
-config/__pycache__/*
-worker/vietnamnet/__pycache__/*
-master/__pycache__/*
+common/sql/__pycache__
+config/__pycache__
+worker/vietnamnet/__pycache__
+master/__pycache__
 test.py

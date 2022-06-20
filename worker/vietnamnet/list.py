@@ -20,6 +20,16 @@ DOMAIN = "vietnamnet.vn"
           retry_backoff=True,
           retry_jitter=250)
 def crawl(category, page, offset):
+    """
+        - hàm crawl: requets, trả về response, gọi đệ quy crawl và gọi hàm xử lý
+        - tiến hành requests để lấy danh sách các bài báo theo chủ đề (chỉ crawl 100 trang đầu)
+        - crawl.delay: gọi đệ quy
+        _ parse: tiến hành xử lý response, lưu vào database
+    :param category:
+    :param page:
+    :param offset:
+    :return:
+    """
     if page == 100:
         return None
     url = f"https://vietnamnet.vn/{category}-page{page}"
@@ -35,6 +45,13 @@ def crawl(category, page, offset):
           retry_backoff=True,
           retry_jitter=250)
 def parse(raw_data, date):
+    """
+    - tiến hành duyệt từng bài báo con trong requests trả về
+    - lấy các trường và lưu vào dataframe
+    :param raw_data:
+    :param date:
+    :return:
+    """
     list_data = BeautifulSoup(raw_data, "html.parser").findAll("div", {"class": "feature-box"})
     for data in list_data:
         _category = data.find("div", {"class": "feature-box__content--brand"}).getText().strip()

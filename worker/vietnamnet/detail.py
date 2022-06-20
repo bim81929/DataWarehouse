@@ -17,7 +17,12 @@ DOMAIN = "vietnamnet.vn"
           retry_backoff=True,
           retry_jitter=250)
 def crawl(product_raw):
-    raw_data = requests_lib.get_text(product_raw[1])
+    """
+        - requests tới url được truyền vào, nếu url không lỗi, gọi hàm parser để xử lý và lưu vào database
+    :param product_raw:
+    :return:
+    """
+    raw_data = requests_lib.get_content(product_raw[1])
     data = BeautifulSoup(raw_data, "html.parser")
     if 'KHÔNG TÌM THẤY ĐƯỜNG DẪN Này' not in data:
         parser(product_raw[0], data)
@@ -29,16 +34,23 @@ def crawl(product_raw):
           retry_backoff=True,
           retry_jitter=250)
 def parser(raw_id, data):
+    """
+        - bóc tách dữ liệu bằng BeautifulSoup
+        - lưu vào database
+    :param raw_id:
+    :param data:
+    :return:
+    """
     category_and_date = data.find("div", {"class": "breadcrumb-box flex-wrap"})
     url = data.find("link", {"rel": "alternate"}).get("href")
-    category = category_and_date.find("a").getText()
-    date_submitted = category_and_date.find("span").getText().strip().split(" ")[0].replace("/", "-")
+    category = category_and_date.find("a").getText().replace("\n", "").strip()
+    date_submitted = _convert_date(category_and_date.find("span").getText().strip().split(" ")[0])
     article = data.find("div", {"class": "newsFeatureBox"})
-    title = article.find("div", {"class": "newsFeature__header"}).find("h1").getText()
-    summary = article.find("div", {"class": "newFeature__main-textBold"}).getText()
-    text = [t.getText() for t in article.findAll("p")]
+    title = article.find("div", {"class": "newsFeature__header"}).find("h1").getText().replace("\n", "").strip()
+    summary = article.find("div", {"class": "newFeature__main-textBold"}).getText().replace("\n", "").strip()
+    text = [t.getText().replace("\n", "").strip() for t in article.findAll("p")]
     author = text[-1]
-    description = "\n".join(text)
+    description = " ".join(text)
     created_date = datetime.now().strftime(config.DATE_TIME_FORMAT)
 
     df = pd.DataFrame(
@@ -52,3 +64,9 @@ def parser(raw_id, data):
     sql.sql_insert(connect, "article", df)
     sql.sql_close(connect)
     return len(data)
+
+
+def _convert_date(date):
+    list_date = list(date.split("/"))
+    list_date.reverse()
+    return "-".join(list_date)

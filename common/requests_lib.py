@@ -40,6 +40,15 @@ def get_text(url, headers=None):
     return response.text
 
 
+def get_content(url, headers=None):
+    if headers is None:
+        headers = HEADERS
+    response = requests.get(url, headers=headers)
+    if response.status_code != 200:
+        return f'error: {response.status_code}, {response.text}'
+    return response.content
+
+
 def post(url, data=None, json=None, headers=None):
     if headers is None:
         headers = HEADERS
@@ -47,6 +56,7 @@ def post(url, data=None, json=None, headers=None):
     if response.status_code != 200:
         return {'status_code': response.status_code, 'text': response.text}
     return response.json()
+
 
 def beatiful_soup(html):
     return BeautifulSoup(html, 'html.parser')
