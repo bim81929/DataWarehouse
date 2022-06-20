@@ -10,7 +10,7 @@
 
 ## Hướng dẫn chạy
 ### Môi trường Ubuntu/Debian
-- sudo apt install ibssl-dev libncurses5-dev libsqlite3-dev libreadline-dev libtk8.6 libgdm-dev libdb4o-cil-dev libpcap-dev libpq-dev libbz2-dev
+- sudo apt install libssl-dev libncurses5-dev libsqlite3-dev libreadline-dev libtk8.6 libgdm-dev libdb4o-cil-dev libpcap-dev libpq-dev libbz2-dev
 - Cài java 1.8: sudo apt-get install openjdk-8-jdk
 - Cài python 3.10: https://www.python.org/downloads/release/python-3105/
   - cd đến directory chứa python
