@@ -20,6 +20,12 @@ class Config:
     DB_NAME = "thdl"
     DATE_TIME_FORMAT = "%Y-%m-%d"
 
+    # config for spark
+    SPARK_MASTER_HOST = "192.168.0.214"
+    SPARK_MASTER_PORT = "7077"
+    LIBRARY_JDBC = "../libs/postgresql-42.4.0.jar"
+    JDBC_DRIVER = "org.postgresql.Driver"
+
     def __init__(self):
         # Set all values to config
         for k in os.environ:

@@ -1,12 +1,11 @@
 # DataWarehouse
-## Chi tiết hệ thống
-- Master (máy thật, ubuntu 20.04)
-- 2 worker (máy ảo, 2 core, 3gb ram, ubuntu 20.04)
 ## Các yêu cầu
 - Python 3.10
 - Java 1.8
-- Apache Hadoop (/usr/local/hadoop)
 - Apache Spark (/usr/local/spark)
+- PosgreSql
+- Redis
+- Flower
 
 ## Hướng dẫn chạy
 ### Cài thư viện

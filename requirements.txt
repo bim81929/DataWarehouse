@@ -5,3 +5,5 @@ redis
 flower
 pandas
 psycopg2
+pyspark
+findspark
