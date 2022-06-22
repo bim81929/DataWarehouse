@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 from config import config
 
 LIMIT_CRAWL = 100
-DOMAIN = "vietnamnet.vn"
+DOMAIN = "dantri.com.vn"
 
 
 @app.task(rate_limit='60/m',
@@ -32,7 +32,8 @@ def crawl(category, page, offset):
     """
     if page == 100:
         return None
-    url = f"https://vietnamnet.vn/{category}-page{page}"
+    # https://dantri.com.vn/bat-dong-san/trang-2.htm
+    url = f"https://dantri.com.vn/{category}/trang-{page}.htm"
     response = requests_lib.get_text(url)
     _date = datetime.now().strftime(config.DATE_TIME_FORMAT)
     parse(response, _date)
@@ -52,17 +53,23 @@ def parse(raw_data, date):
     :param date:
     :return:
     """
-    list_data = BeautifulSoup(raw_data, "html.parser").findAll("div", {"class": "feature-box"})
+    list_data = BeautifulSoup(raw_data, "html.parser").findAll("article", {"class": "article-item"})
     for data in list_data:
-        _category = data.find("div", {"class": "feature-box__content--brand"}).getText().strip()
-        _url_title = data.find("h3", {"class": "feature-box__content--title vnn-title"}).find("a")
-        _summary = data.find("div", {"class": "feature-box__content--desc"}).getText().strip()
+        # _category = data.find("div", {"class": "feature-box__content--brand"}).getText().strip()
+        # _url_title = data.find("h3", {"class": "feature-box__content--title vnn-title"}).find("a")
+        # _summary = data.find("div", {"class": "feature-box__content--desc"}).getText().strip()
+
+        _url = data.find("a").get("href")
+        _title = data.find("h3", {"class":"article-title"}).getText()
+        _summary = data.find("div", {"class":"article-excerpt"}).find("a").getText()
+        _category = data.find("h1", {"class":"title-page"}).find("a").getText()
+
 
         df = pd.DataFrame(
-            {"id": [str(uuid.uuid4())], "domain": DOMAIN, "url": [f"https://{DOMAIN}{_url_title.get('href')}"],
+            {"id": [str(uuid.uuid4())], "domain": DOMAIN, "url": [f"https://{DOMAIN}{_url}"],
              "category": [str(_category)],
-             "title": [_url_title.getText().strip().replace("'", '"')],
-             "summary": [str(_summary).replace("'", '"')], "created_date": date})
+             "title": [_title],
+             "summary": [_summary], "created_date": date})
         connect = sql.get_connect()
         sql.sql_insert(connect, "list", df)
         sql.sql_close(connect)

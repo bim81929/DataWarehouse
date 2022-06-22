@@ -9,7 +9,7 @@ from master import master_runner
 from config import config
 from common.sql import sql
 
-DOMAIN = "vietnamnet.vn"
+DOMAIN = "dantri.com.vn"
 if __name__ == "__main__":
     """
         - query ra các các bài báo ở bảng list theo domain mong muốn, có thời gian crawl trong hôm nay
