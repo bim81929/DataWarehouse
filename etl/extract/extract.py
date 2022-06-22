@@ -14,8 +14,11 @@ def extract():
     appName = "Extract"
     spark_session = spark_helper.get_spark_session(appName, config.SPARK_MASTER_HOST, config.SPARK_MASTER_PORT,
                                                    config.LIBRARY_JDBC)
-    df = spark_helper.spark_read_table(spark_session, config.DB_HOST, config.DB_PORT,
-                                       config.DB_NAME, "list")
+    # df = spark_helper.spark_read_table(spark_session, config.DB_HOST, config.DB_PORT,
+    #                                    config.DB_NAME, "list")
+    query = "select title, summary, created_date from list where category='Thời sự'"
+    df = spark_helper.spark_read_query(spark_session, config.DB_HOST, config.DB_PORT,
+                                       config.DB_NAME, query)
     df.show()
     # spark_helper.close_spark_session(spark_session)
 
