@@ -21,9 +21,9 @@ class Config:
     DATE_TIME_FORMAT = "%Y-%m-%d"
 
     # config for spark
-    SPARK_MASTER_HOST = "192.168.0.214"
+    SPARK_MASTER_HOST = "10.0.11.101"
     SPARK_MASTER_PORT = "7077"
-    LIBRARY_JDBC = "../libs/postgresql-42.4.0.jar"
+    LIBRARY_JDBC = "postgresql-42.4.0.jar"
     JDBC_DRIVER = "org.postgresql.Driver"
 
     def __init__(self):

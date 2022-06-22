@@ -16,7 +16,7 @@ spark = spark_helper.get_spark_session(appName, config.SPARK_MASTER_HOST, config
 df = spark.read \
     .format("jdbc") \
     .option("url", f"jdbc:postgresql://localhost:5432/{config.DB_NAME}") \
-    .option("dbtable", "list") \
+    .option("query", "select * from list where category='Thời sự'") \
     .option("user", config.DB_USERNAME) \
     .option("password", config.DB_PASSWORD) \
     .option("driver", "org.postgresql.Driver") \

@@ -13,10 +13,33 @@ def get_spark_session(name, host, port, lib):
     return spark.getOrCreate()
 
 
+def close_spark_session(spark_session):
+    spark_session.stop()
+
+
 def spark_read_query(spark_session, host, port, database, query, temporary_table=False, name_of_temporary_table=None):
     df = spark_session.read \
-        .jdbc(url=f"jdbc:postgresql://{host}:{port}/{database}", table=query,
-              properties={"user": config.DB_USERNAME, "password": config.DB_PASSWORD, "driver": config.JDBC_DRIVER})
+        .format("jdbc") \
+        .option("url", f"jdbc:postgresql://{host}:{port}/{database}") \
+        .option("query", query) \
+        .option("user", config.DB_USERNAME) \
+        .option("password", config.DB_PASSWORD) \
+        .option("driver", config.JDBC_DRIVER) \
+        .load()
+    if temporary_table and name_of_temporary_table is not None:
+        return df.createTempView(name_of_temporary_table)
+    return df
+
+
+def spark_read_table(spark_session, host, port, database, table, temporary_table=False, name_of_temporary_table=None):
+    df = spark_session.read \
+        .format("jdbc") \
+        .option("url", f"jdbc:postgresql://{host}:{port}/{database}") \
+        .option("dbtable", table) \
+        .option("user", config.DB_USERNAME) \
+        .option("password", config.DB_PASSWORD) \
+        .option("driver", config.JDBC_DRIVER) \
+        .load()
     if temporary_table and name_of_temporary_table is not None:
         return df.createTempView(name_of_temporary_table)
     return df
