@@ -32,9 +32,8 @@ def crawl(category, page, offset):
     """
     if page == 100:
         return None
-    # https://dantri.com.vn/bat-dong-san/trang-2.htm
     url = f"https://dantri.com.vn/{category}/trang-{page}.htm"
-    response = requests_lib.get_text(url)
+    response = requests_lib.get_content(url)
     _date = datetime.now().strftime(config.DATE_TIME_FORMAT)
     parse(response, _date)
     crawl.delay(category, page + offset, offset)
@@ -53,25 +52,24 @@ def parse(raw_data, date):
     :param date:
     :return:
     """
-    list_data = BeautifulSoup(raw_data, "html.parser").findAllNext("article", {"class": "article-item"})
+    raw = BeautifulSoup(raw_data, "html.parser")
+    list_data = raw.find("div", {"class": "article list"}).findAllNext("article", {"class": "article-item"})
+    _category = raw.find("h1", {"class": "title-page"}).find("a").getText()
     for data in list_data:
-        # _category = data.find("div", {"class": "feature-box__content--brand"}).getText().strip()
-        # _url_title = data.find("h3", {"class": "feature-box__content--title vnn-title"}).find("a")
-        # _summary = data.find("div", {"class": "feature-box__content--desc"}).getText().strip()
+        try:
+            _url = data.get("data-content-target")
+            _title = data.findNext("div", {"class": "article-content"}).findNext("h3", {"class": "article-title"}).find(
+                "a").getText()
+            _summary = data.findNext("div", {"class": "article-excerpt"}).find("a").getText()
 
-        _url = data.findNext("div", {"class":"article-content"}).findNext("h3", {"class":"article-title"}).find("a").get("href")
-        _title = data.findNext("div", {"class":"article-content"}).findNext("h3", {"class":"article-title"}).find("a").getText()
-        _summary = data.findNext("div", {"class":"article-excerpt"}).find("a").getText()
-        _category = data.find("h1", {"class":"title-page"}).find("a").getText()
-
-
-        df = pd.DataFrame(
-            {"id": [str(uuid.uuid4())], "domain": DOMAIN, "url": [f"https://{DOMAIN}{_url}"],
-             "category": [str(_category)],
-             "title": [_title],
-             "summary": [_summary], "created_date": date})
-        connect = sql.get_connect()
-        sql.sql_insert(connect, "list", df)
-        sql.sql_close(connect)
+            df = pd.DataFrame(
+                {"id": [str(uuid.uuid4())], "domain": DOMAIN, "url": [f"https://{DOMAIN}{_url}"],
+                 "category": [str(_category)],
+                 "title": [_title],
+                 "summary": [_summary], "created_date": date})
+            connect = sql.get_connect()
+            sql.sql_insert(connect, "list", df)
+        except Exception as e:
+            pass
 
     return len(list_data)

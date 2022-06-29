@@ -81,7 +81,6 @@ def parser(raw_id, raw_url, data):
     )
     connect = sql.get_connect()
     sql.sql_insert(connect, "article", df)
-    sql.sql_close(connect)
     return len(data)
 
 

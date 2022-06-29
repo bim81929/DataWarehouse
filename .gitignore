@@ -9,4 +9,5 @@ worker/vietnamnet/__pycache__
 master/__pycache__
 test.py
 projectenv/
+**.pyc
 *.pyc
