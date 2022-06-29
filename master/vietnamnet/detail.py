@@ -4,7 +4,7 @@ import sys
 
 sys.path.append(os.getcwd())
 
-from worker.vietnamnet import detail
+from worker.dantri import detail
 from master import master_runner
 from config import config
 from common.sql import sql
