@@ -53,15 +53,15 @@ def parse(raw_data, date):
     :param date:
     :return:
     """
-    list_data = BeautifulSoup(raw_data, "html.parser").findAll("article", {"class": "article-item"})
+    list_data = BeautifulSoup(raw_data, "html.parser").findAllNext("article", {"class": "article-item"})
     for data in list_data:
         # _category = data.find("div", {"class": "feature-box__content--brand"}).getText().strip()
         # _url_title = data.find("h3", {"class": "feature-box__content--title vnn-title"}).find("a")
         # _summary = data.find("div", {"class": "feature-box__content--desc"}).getText().strip()
 
-        _url = data.find("a").get("href")
-        _title = data.find("h3", {"class":"article-title"}).getText()
-        _summary = data.find("div", {"class":"article-excerpt"}).find("a").getText()
+        _url = data.findNext("div", {"class":"article-content"}).findNext("h3", {"class":"article-title"}).find("a").get("href")
+        _title = data.findNext("div", {"class":"article-content"}).findNext("h3", {"class":"article-title"}).find("a").getText()
+        _summary = data.findNext("div", {"class":"article-excerpt"}).find("a").getText()
         _category = data.find("h1", {"class":"title-page"}).find("a").getText()
 
 
