@@ -65,6 +65,5 @@ def parse(raw_data, date):
              "summary": [str(_summary).replace("'", '"')], "created_date": date})
         connect = sql.get_connect()
         sql.sql_insert(connect, "list", df)
-        sql.sql_close(connect)
 
     return len(list_data)

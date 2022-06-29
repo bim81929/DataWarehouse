@@ -43,7 +43,9 @@ def sql_insert(connect, table, df):
                 values = "VALUES{}".format(",".join(list_values))
                 query = f"INSERT INTO {table} ({columns}) {values}"
                 cursor.execute(query)
-            except:
+                print(query)
+            except Exception as e:
+                print(f"Error {e}")
                 pass
         sql_close(connect)
     else:

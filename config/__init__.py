@@ -3,11 +3,11 @@ import os
 
 class Config:
     CELERY_APP = 'common.celery.app'
-    CELERY_TASKS = 'worker.vietnamnet.detail'
+    CELERY_TASKS = 'worker.dantri.detail'
     LOGGING_LEVEL = 'INFO'
     LOGGING_FILE = 'crawler.log'
     LOG_FORMAT = '%(asctime)s -- %(levelname)s -- %(filename)s -- %(message)s'
-    MASTER_RUNNERS = 'master/vietnamnet/detail.py'
+    MASTER_RUNNERS = 'master/dantri/detail.py'
     MASTER_HOST = 'localhost'
     MASTER_PASSWORD = ""
     WORKER_NUMS = 1

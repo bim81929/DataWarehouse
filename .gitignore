@@ -10,5 +10,6 @@ master/__pycache__
 common/__pycache__/requests_lib.cpython-38.pyc
 test.py
 projectenv/
+
+**.pyc
 *.pyc
-*/__pycache__

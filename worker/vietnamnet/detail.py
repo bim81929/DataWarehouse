@@ -62,7 +62,6 @@ def parser(raw_id, data):
          "created_date": created_date})
     connect = sql.get_connect()
     sql.sql_insert(connect, "article", df)
-    sql.sql_close(connect)
     return len(data)
 
 

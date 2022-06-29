@@ -50,7 +50,7 @@ def parser(raw_id, raw_url, data):
     """
     category = data.find("ul", {"class": "breadcrumbs"}).find("li").find("a").getText()
     date_submitted = data.find("time", {"class": "author-time"}).get("datetime").split(" ")
-    date_summitted = date_summitted[0]
+    date_summitted = date_submitted[0]
     url = raw_url
 
     title = data.find("h1", {"class":"title-page"}).getText()
@@ -81,7 +81,6 @@ def parser(raw_id, raw_url, data):
     )
     connect = sql.get_connect()
     sql.sql_insert(connect, "article", df)
-    sql.sql_close(connect)
     return len(data)
 
 
