@@ -16,7 +16,7 @@ if __name__ == "__main__":
         - detail.crawl gọi tới detail tương ứng
     """
     columns = ["id", "url"]
-    # date = datetime.datetime.now() - datetime.timedelta(days=2)
+    # date = datetime.datetime.now() - datetime.timedelta(days=3)
     # Để dòng trên nếu có sẵn database crawl từ hôm trước
     date = datetime.datetime.now()
     condition = f"created_date='{date.strftime(config.DATE_TIME_FORMAT)}' and domain='{DOMAIN}'"
@@ -24,3 +24,4 @@ if __name__ == "__main__":
     data = sql.sql_read_table(connect, "list", columns, condition)
     # print(data)
     master_runner.detail(data, detail.crawl)
+    [('key1', 'value1'), ()]

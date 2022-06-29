@@ -7,7 +7,9 @@ common/sql/__pycache__
 config/__pycache__
 worker/vietnamnet/__pycache__
 master/__pycache__
+common/__pycache__/requests_lib.cpython-38.pyc
 test.py
 projectenv/
+
 **.pyc
 *.pyc
