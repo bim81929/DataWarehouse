@@ -1,6 +1,7 @@
 venv
 .idea/*
 crawler.log
+*/crawler.log
 dump.rdb
 master/vietnamnet/crawler.log
 common/sql/__pycache__
