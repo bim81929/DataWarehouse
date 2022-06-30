@@ -54,13 +54,13 @@ def parse(raw_data, date):
     """
     list_data = BeautifulSoup(raw_data, "html.parser").findAll("div", {"class": "feature-box"})
     for data in list_data:
-        _category = data.find("div", {"class": "feature-box__content--brand"}).getText().strip()
-        _url_title = data.find("h3", {"class": "feature-box__content--title vnn-title"}).find("a")
-        _summary = data.find("div", {"class": "feature-box__content--desc"}).getText().strip()
+        # _category = data.find("div", {"class": "feature-box__content--brand"}).getText().strip()
+        _url_title = data.find("h3", {"class": "title-news"}).find("a")
+        _summary = data.find("p", {"class": "sapo need-trimline"}).getText().strip()
 
         df = pd.DataFrame(
             {"id": [str(uuid.uuid4())], "domain": DOMAIN, "url": [f"https://{DOMAIN}{_url_title.get('href')}"],
-             "category": [str(_category)],
+             "category": [str('none')],
              "title": [_url_title.getText().strip().replace("'", '"')],
              "summary": [str(_summary).replace("'", '"')], "created_date": date})
         connect = sql.get_connect()

@@ -41,16 +41,15 @@ def parser(raw_id, data):
     :param data:
     :return:
     """
-    category_and_date = data.find("div", {"class": "breadcrumb-box flex-wrap"})
-    url = data.find("link", {"rel": "alternate"}).get("href")
-    category = category_and_date.find("a").getText().replace("\n", "").strip()
-    date_submitted = _convert_date(category_and_date.find("span").getText().strip().split(" ")[0])
-    article = data.find("div", {"class": "newsFeatureBox"})
-    title = article.find("div", {"class": "newsFeature__header"}).find("h1").getText().replace("\n", "").strip()
-    summary = article.find("div", {"class": "newFeature__main-textBold"}).getText().replace("\n", "").strip()
-    text = [t.getText().replace("\n", "").strip() for t in article.findAll("p")]
-    author = text[-1]
+    url = data.find("link", {"rel": "canonical"}).get("href")
+    category = data.findAll("ul")[9].findAll("li")[0].getText()
+    date_submitted = _convert_date(data.find("div", {"class": "date-time"}).getText().strip().split(" ")[0])
+
+    title = data.find("h1", {"class": "article-title"}).getText().replace("\n", "").strip()
+    summary = data.find("h2", {"class": "sapo"}).getText().replace("\n", "").strip()
+    text = [t.getText().replace("\n", "").strip() for t in data.find("div", {"id": "main-detail-body"})]
     description = " ".join(text)
+    author = data.find("div", {"class": "author"}).getText()
     created_date = datetime.now().strftime(config.DATE_TIME_FORMAT)
 
     df = pd.DataFrame(
