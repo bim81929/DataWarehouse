@@ -22,5 +22,4 @@ if __name__ == "__main__":
     condition = f"created_date='{date.strftime(config.DATE_TIME_FORMAT)}' and domain='{DOMAIN}'"
     connect = sql.get_connect()
     data = sql.sql_read_table(connect, "list", columns, condition)
-    # print(data)
     master_runner.detail(data, detail.crawl)

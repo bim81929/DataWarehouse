@@ -49,19 +49,14 @@ def parser(raw_id, raw_url, data):
     :return:
     """
     category = data.find("ul", {"class": "breadcrumbs"}).find("li").find("a").getText()
-    date_submitted = data.find("time", {"class": "author-time"}).get("datetime").split(" ")
-    date_summitted = date_submitted[0]
+    date_summited = data.find("time", {"class":"author-time"}).get("datetime").split(" ")[0]
     url = raw_url
 
-    title = data.find("h1", {"class":"title-page"}).getText()
-    summary = data.find("h2", {"class":"singular-sapo"}).getText()
+    title = data.find("h1", {"class": "title-page detail"}).getText()
+    summary = data.find("h2", {"class": "singular-sapo"}).getText()
     listText = data.find("div", {"class":"singular-content"}).findAll("p")
-    text = []
-    for t in listText:
-        text.append(t.getText())
-    
-    author = data.find("div", {"class":"author-name"}).find("a").getText()
-    description = " ".join(text)
+    author = data.find("div", {"class": "author-name"}).find("b").getText()
+    description = "\n".join([x.getText() for x in listText])
     created_date = datetime.now().strftime(config.DATE_TIME_FORMAT)
 
     df = pd.DataFrame(
@@ -75,16 +70,10 @@ def parser(raw_id, raw_url, data):
             "author": [author],
             "summary": [summary],
             "description": [description],
-            "date_submitted": [date_submitted],
+            "date_submitted": [date_summited],
             "created_date": created_date,
         }
     )
     connect = sql.get_connect()
     sql.sql_insert(connect, "article", df)
     return len(data)
-
-
-def _convert_date(date):
-    list_date = list(date.split("/"))
-    list_date.reverse()
-    return "-".join(list_date)
