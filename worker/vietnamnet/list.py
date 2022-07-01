@@ -59,7 +59,9 @@ def parse(raw_data, date):
         _summary = data.find("div", {"class": "feature-box__content--desc"}).getText().strip()
 
         df = pd.DataFrame(
-            {"id": [str(uuid.uuid4())], "domain": DOMAIN, "url": [f"https://{DOMAIN}{_url_title.get('href')}"],
+            {"id": [str(uuid.uuid4())], "domain": DOMAIN, "url": [
+                f"https://{DOMAIN}{_url_title.get('href')}" if DOMAIN not in _url_title.get('href') else _url_title.get(
+                    'href')],
              "category": [str(_category)],
              "title": [_url_title.getText().strip().replace("'", '"')],
              "summary": [str(_summary).replace("'", '"')], "created_date": date})

@@ -49,7 +49,10 @@ def parser(raw_id, data):
     title = article.find("div", {"class": "newsFeature__header"}).find("h1").getText().replace("\n", "").strip()
     summary = article.find("div", {"class": "newFeature__main-textBold"}).getText().replace("\n", "").strip()
     text = [t.getText().replace("\n", "").strip() for t in article.findAll("p")]
-    author = text[-1]
+    try:
+        author = article.findAll("p")[-1].find("strong").getText()
+    except:
+        author = ""
     description = " ".join(text)
     created_date = datetime.now().strftime(config.DATE_TIME_FORMAT)
 

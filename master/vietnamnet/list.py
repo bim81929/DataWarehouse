@@ -2,7 +2,7 @@ import os
 import sys
 
 sys.path.append(os.getcwd())
-from worker.dantri import list
+from worker.vietnamnet import list
 from master import master_runner
 
 if __name__ == "__main__":
