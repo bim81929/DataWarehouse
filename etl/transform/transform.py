@@ -10,6 +10,6 @@ from common import spark_helper
 from datetime import datetime
 
 
-def transform(dataframe):
-    dataframe.show()
+def transform(dataframe_1, dataframe_2, dataframe_3):
+
     return dataframe

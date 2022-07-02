@@ -24,4 +24,4 @@ if __name__ == "__main__":
     data = sql.sql_read_table(connect, "list", columns, condition)
     # print(data)
     master_runner.detail(data, detail.crawl)
-    [('key1', 'value1'), ()]
+    # [('key1', 'value1'), ()]
