@@ -11,5 +11,6 @@ from datetime import datetime
 
 
 def transform(dataframe):
-    dataframe.show()
+
+
     return dataframe
