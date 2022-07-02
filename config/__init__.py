@@ -3,11 +3,11 @@ import os
 
 class Config:
     CELERY_APP = 'common.celery.app'
-    CELERY_TASKS = 'worker.vietnamnet.list'
+    CELERY_TASKS = 'worker.vietnamnet.detail'
     LOGGING_LEVEL = 'INFO'
     LOGGING_FILE = 'crawler.log'
     LOG_FORMAT = '%(asctime)s -- %(levelname)s -- %(filename)s -- %(message)s'
-    MASTER_RUNNERS = 'master/vietnamnet/list.py'
+    MASTER_RUNNERS = 'master/vietnamnet/detail.py'
     MASTER_HOST = 'localhost'
     MASTER_PASSWORD = ""
     WORKER_NUMS = 1
@@ -21,7 +21,7 @@ class Config:
     DATE_TIME_FORMAT = "%Y-%m-%d"
 
     # config for spark
-    SPARK_MASTER_HOST = "192.168.1.240"
+    SPARK_MASTER_HOST = "192.168.101.41"
     SPARK_MASTER_PORT = "7077"
     LIBRARY_JDBC = "postgresql-42.4.0.jar"
     JDBC_DRIVER = "org.postgresql.Driver"
