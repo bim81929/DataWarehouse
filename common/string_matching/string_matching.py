@@ -11,12 +11,12 @@ import pandas as pd
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 
+
 def matching_data(primary_data, secondary_data):
-    primary_data = primary_data.reset_index()
     secondary_title = secondary_data["title"].to_list()
 
-    for index, row in primary_data.iterrows():
-        list_matches = process.extract(row["title"], secondary_title)
+    for key, value in primary_data.iterrows():
+        list_matches = process.extract(value["title"], secondary_title)
         for item in list_matches:
             if item[1] >= 90:
                 secondary_data.drop(
@@ -27,9 +27,9 @@ def matching_data(primary_data, secondary_data):
             else:
                 break
     result = pd.concat([primary_data, secondary_data], ignore_index=True, sort=False)
-    result.drop(columns=["id", "raw_id", "domain"] , axis=1, inplace=True)
-    # print(result)
+    result.drop(columns=["id", "raw_id", "domain"], axis=1, inplace=True)
     return result
+
 
 # list_columns = {
 #     "list": ["id", "domain", "url", "category", "title", "summary", "created_date"],
@@ -57,4 +57,4 @@ def matching_data(primary_data, secondary_data):
 #     columns=list_columns["article"],
 # )
 
-# matching_data(primary_data, secondary_data)
+# print(matching_data(primary_data, secondary_data))
