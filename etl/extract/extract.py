@@ -14,12 +14,12 @@ from datetime import datetime
 
 def extract(domain):
     # create spark session
-    appName = "Extract"
+    appName = f"Extract"
     spark_session = spark_helper.get_spark_session(appName, config.SPARK_MASTER_HOST, config.SPARK_MASTER_PORT,
                                                    config.LIBRARY_JDBC)
     query = f"select * from article where created_date<='{datetime.now().strftime(config.DATE_TIME_FORMAT)}'" \
-            f"where domain='{domain}'"
-    data = spark_read_query(spark_session, config.DB_HOST, config.DB_PORT, config.DB_NAME, query)
+            f"and domain='{domain}'"
+    data = spark_read_query(spark_session, config.DB_HOST, config.DB_PORT, config.DB_NAME, query).distinct().toPandas()
     return data
 
 

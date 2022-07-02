@@ -45,8 +45,8 @@ def spark_read_table(spark_session, host, port, database, table, temporary_table
     return df
 
 
-def save_dataframe_to_postgreesql(dataframe, host, port, database, table):
+def save_dataframe_to_postgreesql(dataframe, table):
     dataframe.write.format("jdbc") \
-        .option("url", f"jdbc:postgresql://{host}:{port}/{database}") \
+        .option("url", f"jdbc:postgresql://{config.DB_HOST}:{config.DB_PORT}/{config.DB_NAME}") \
         .option("driver", config.JDBC_DRIVER).option("dbtable", table) \
-        .option("user", config.DB_USERNAME).option("password", config.DB_PASSWORD).save()
+        .option("user", config.DB_USERNAME).option("password", config.DB_PASSWORD).mode('append').save()
