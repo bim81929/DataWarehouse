@@ -37,5 +37,18 @@ create table article
 alter table article
     owner to dev;
 
+create table result
+(
+    id  text not null primary key ,
+    category    text not null ,
+    title          text not null,
+    author         text,
+    summary        text,
+    description    text not null,
+    date_submitted date,
+    created_date   date not null
+);
 
+alter table result
+    owner to dev;
 
