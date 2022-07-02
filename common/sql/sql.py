@@ -79,3 +79,10 @@ def sql_execute(connect, query):
         sql_close(connect)
     else:
         print("ERROR CONNECT")
+
+
+if __name__ == '__main__':
+    connect = get_connect()
+    data = sql_read_table(connect, table="article", l_columns=["*"])
+    for f in data[:5]:
+        print(f)
