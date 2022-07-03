@@ -21,7 +21,7 @@ class Config:
     DATE_TIME_FORMAT = "%Y-%m-%d"
 
     # config for spark
-    SPARK_MASTER_HOST = "192.168.176.48"
+    SPARK_MASTER_HOST = "192.168.1.240"
     SPARK_MASTER_PORT = "7077"
     LIBRARY_JDBC = "postgresql-42.4.0.jar"
     JDBC_DRIVER = "org.postgresql.Driver"

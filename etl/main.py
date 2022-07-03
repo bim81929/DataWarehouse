@@ -17,11 +17,15 @@ if __name__ == "__main__":
     tuoitre = extract(data[2])
 
     result = transform(vietnamnet, dantri, tuoitre)
-    result.drop(["level_0", "index", "url"], axis=1, inplace=True)
+
     id = []
     for i in range(0, len(result["title"])):
         id.append(str(uuid.uuid4()))
     result.insert(1, "id", id, True)
-
+    list_drop = ["level_0", "index", "url"]
+    for _drop in list_drop:
+        try:
+            result.drop(_drop, axis=1, inplace=True)
+        except:
+            continue
     load(result, "result")
-
