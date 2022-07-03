@@ -25,7 +25,7 @@ def crawl(product_raw):
     raw_data = requests_lib.get_content(product_raw[1])
     data = BeautifulSoup(raw_data, "html.parser")
     if 'KHÔNG TÌM THẤY ĐƯỜNG DẪN Này' not in data:
-        parser(product_raw[0], data)
+        parser(product_raw[0], data, product_raw[1])
     return len(raw_data)
 
 
@@ -33,7 +33,7 @@ def crawl(product_raw):
           retry_kwargs={'max_retries': 3},
           retry_backoff=True,
           retry_jitter=250)
-def parser(raw_id, data):
+def parser(raw_id, data, url):
     """
         - bóc tách dữ liệu bằng BeautifulSoup
         - lưu vào database
@@ -41,15 +41,14 @@ def parser(raw_id, data):
     :param data:
     :return:
     """
-    url = data.find("link", {"rel": "canonical"}).get("href")
-    category = data.findAll("ul")[9].findAll("li")[0].getText()
+    category = data.find("div", {"class": "bread-crumbs fl"}).findAll("li")[0].findNext("a").getText()
     date_submitted = _convert_date(data.find("div", {"class": "date-time"}).getText().strip().split(" ")[0])
 
-    title = data.find("h1", {"class": "article-title"}).getText().replace("\n", "").strip()
+    title = data.find("h1", {"class": "article-title"}).getText()
     summary = data.find("h2", {"class": "sapo"}).getText().replace("\n", "").strip()
     text = [t.getText().replace("\n", "").strip() for t in data.find("div", {"id": "main-detail-body"})]
     description = " ".join(text)
-    author = data.find("div", {"class": "author"}).getText()
+    author = data.find("div", {"class": "author"}).getText().replace("\r", "\n").replace("\n", "")
     created_date = datetime.now().strftime(config.DATE_TIME_FORMAT)
 
     df = pd.DataFrame(

@@ -43,8 +43,12 @@ def parser(raw_id, data):
     """
     category_and_date = data.find("div", {"class": "breadcrumb-box flex-wrap"})
     url = data.find("link", {"rel": "alternate"}).get("href")
-    category = category_and_date.find("a").getText().replace("\n", "").strip()
-    date_submitted = _convert_date(category_and_date.find("span").getText().strip().split(" ")[0])
+    try:
+        category = category_and_date.find("a").getText().replace("\n", "").strip()
+        date_submitted = _convert_date(category_and_date.find("span").getText().strip().split(" ")[0])
+    except:
+        category = ""
+        date_submitted = None
     article = data.find("div", {"class": "newsFeatureBox"})
     title = article.find("div", {"class": "newsFeature__header"}).find("h1").getText().replace("\n", "").strip()
     summary = article.find("div", {"class": "newFeature__main-textBold"}).getText().replace("\n", "").strip()

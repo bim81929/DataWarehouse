@@ -1,16 +1,14 @@
-import json
 import uuid
 from datetime import datetime
-import sys
-import pandas as pd
 
-from common.sql import sql
-from common.celery.app import app
-from common import requests_lib
+import pandas as pd
 from bs4 import BeautifulSoup
+
+from common import requests_lib
+from common.celery.app import app
+from common.sql import sql
 from config import config
 
-LIMIT_CRAWL = 100
 DOMAIN = "dantri.com.vn"
 
 
@@ -30,7 +28,7 @@ def crawl(category, page, offset):
     :param offset:
     :return:
     """
-    if page == 100:
+    if page == 5:
         return None
     url = f"https://dantri.com.vn/{category}/trang-{page}.htm"
     response = requests_lib.get_content(url)

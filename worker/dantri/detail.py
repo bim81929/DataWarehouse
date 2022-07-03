@@ -1,15 +1,13 @@
-from cgitb import text
 import uuid
 from datetime import datetime
 
-from numpy import append
+import pandas as pd
+from bs4 import BeautifulSoup
 
 from common import requests_lib
 from common.celery.app import app
 from common.sql import sql
-from bs4 import BeautifulSoup
 from config import config
-import pandas as pd
 
 DOMAIN = "dantri.com.vn"
 

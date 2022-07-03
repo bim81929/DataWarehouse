@@ -1,16 +1,14 @@
-import json
 import uuid
 from datetime import datetime
-import sys
-import pandas as pd
 
-from common.sql import sql
-from common.celery.app import app
-from common import requests_lib
+import pandas as pd
 from bs4 import BeautifulSoup
+
+from common import requests_lib
+from common.celery.app import app
+from common.sql import sql
 from config import config
 
-LIMIT_CRAWL = 100
 DOMAIN = "tuoitre.vn"
 
 
@@ -30,9 +28,9 @@ def crawl(category, page, offset):
     :param offset:
     :return:
     """
-    if page == 100:
+    if page == 5:
         return None
-    url = f"https://tuoitre.vn/timeline-xem-theo-ngay/3/{category}/trang-{page}.htm"
+    url = f"https://tuoitre.vn/{category}/trang-{page}.htm"
     response = requests_lib.get_text(url)
     _date = datetime.now().strftime(config.DATE_TIME_FORMAT)
     parse(response, _date)
@@ -52,16 +50,17 @@ def parse(raw_data, date):
     :param date:
     :return:
     """
-    list_data = BeautifulSoup(raw_data, "html.parser").findAll("div", {"class": "feature-box"})
+    data = BeautifulSoup(raw_data, "html.parser")
+    list_data = data.findAll("li", {"class": "news-item"})
+    category = data.find("div", {"class": "bread-crumbs fl"}).findAll("li")[0].find("a").get("title")
     for data in list_data:
-        # _category = data.find("div", {"class": "feature-box__content--brand"}).getText().strip()
-        _url_title = data.find("h3", {"class": "title-news"}).find("a")
-        _summary = data.find("p", {"class": "sapo need-trimline"}).getText().strip()
+        _url_title = data.findNext("a")
+        _summary = data.findNext("div", {"class": "name-news"}).findNext("p").getText()
 
         df = pd.DataFrame(
             {"id": [str(uuid.uuid4())], "domain": DOMAIN, "url": [f"https://{DOMAIN}{_url_title.get('href')}"],
-             "category": [str('none')],
-             "title": [_url_title.getText().strip().replace("'", '"')],
+             "category": [category],
+             "title": [_url_title.get('title').strip().replace("'", '"')],
              "summary": [str(_summary).replace("'", '"')], "created_date": date})
         connect = sql.get_connect()
         sql.sql_insert(connect, "list", df)

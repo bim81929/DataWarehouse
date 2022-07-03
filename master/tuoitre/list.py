@@ -10,4 +10,4 @@ if __name__ == "__main__":
         - file_path: file chứa các category(các mục báo), cấu trúc <domain>.txt ở logs
         - worker: gọi tới list.crawl tương ứng
     """
-    master_runner.list(file_path='D:\\DataWarehouse\\logs\\tuoitre.txt', worker=list.crawl, fn_prepare=None)
+    master_runner.list(file_path='logs/tuoitre.txt', worker=list.crawl, fn_prepare=None)
