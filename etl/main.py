@@ -18,14 +18,4 @@ if __name__ == "__main__":
 
     result = transform(vietnamnet, dantri, tuoitre)
 
-    id = []
-    for i in range(0, len(result["title"])):
-        id.append(str(uuid.uuid4()))
-    result.insert(1, "id", id, True)
-    list_drop = ["level_0", "index", "url"]
-    for _drop in list_drop:
-        try:
-            result.drop(_drop, axis=1, inplace=True)
-        except:
-            continue
     load(result, "result")

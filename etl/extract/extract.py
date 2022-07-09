@@ -20,7 +20,7 @@ def extract(domain):
                                                    config.LIBRARY_JDBC)
     query = f"select * from article where date_submitted>='{date.strftime(config.DATE_TIME_FORMAT)}'" \
             f"and domain='{domain}' order by date_submitted desc"
-    data = spark_read_query(spark_session, config.DB_HOST, config.DB_PORT, config.DB_NAME, query).distinct().toPandas()
+    data = spark_read_query(spark_session, config.DB_HOST, config.DB_PORT, config.DB_NAME, query)
     return data
 
 
